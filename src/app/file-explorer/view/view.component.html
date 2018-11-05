@@ -1,0 +1,12 @@
+<mat-card>
+  <file-explorer  [nodes]="fileNodes$ | async"
+                  [path]="currentPath"
+                  [canNavigateUp]="canNavigateUp"
+                  (nodeAdded)="addNode($event)"
+                  (nodeRemoved)="removeNode($event)"
+                  (navigatedDown)="navigateToFolder($event)"
+                  (navigatedUp)="navigateUp()"
+                  (nodeRenamed)="renameNode($event)"
+                  (nodeMoved)="moveNode($event)">
+  </file-explorer>
+</mat-card>

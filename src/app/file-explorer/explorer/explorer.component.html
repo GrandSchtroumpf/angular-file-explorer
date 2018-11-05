@@ -1,0 +1,64 @@
+<mat-toolbar>
+  <mat-icon *ngIf="canNavigateUp" class="pointer" (click)="navigateUp()">
+    arrow_back
+  </mat-icon>
+  <span style="margin-left: 8px">
+    {{path || 'Files'}}
+  </span>
+  <span class="spacer"></span>
+  <mat-icon (click)="openNewNodeDialog(false)">
+    note_add
+  </mat-icon>
+  <mat-icon (click)="openNewNodeDialog(true)">
+    create_new_folder
+  </mat-icon>
+</mat-toolbar>
+
+<main fxFlex fxLayout="row" fxLayoutAlign="space-between stretch">
+  <div fxFlex fxLayout="row">
+    <mat-grid-list cols="8" rowHeight="100px" fxFlex>
+      <mat-grid-tile *ngFor="let node of nodes" class=file-or-folder>
+        <span [matMenuTriggerFor]="rootMenu"
+              [matMenuTriggerData]="{node: node}"
+              #menuTrigger="matMenuTrigger">
+        </span>
+        <div  fxLayout="column"
+              fxLayoutAlign="space-between center"
+              (click)="navigate(node)"
+              (contextmenu)="openMenu($event, menuTrigger)">
+
+          <mat-icon color="primary" class="file-or-folder-icon pointer">
+            {{ node.isFolder ? 'folder' : 'insert_drive_file' }}
+          </mat-icon>
+          <span>{{node.name}}</span>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    </div>
+</main>
+
+
+<mat-menu #rootMenu="matMenu" [overlapTrigger]="false">
+  <ng-template matMenuContent let-node="node">
+    <button mat-menu-item [matMenuTriggerFor]="moveToMenu" [matMenuTriggerData]="{self: node}">
+      <mat-icon>open_with</mat-icon>
+      <span>Move To</span>
+    </button>
+    <button mat-menu-item (click)="openRenameDialog(node)">
+      <mat-icon>edit</mat-icon>
+      <span>Rename</span>
+    </button>
+    <button mat-menu-item (click)="deleteElement(node)">
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #moveToMenu="matMenu">
+  <ng-template matMenuContent let-self="self">
+    <ng-container *ngFor="let node of fileElements">
+      <button *ngIf="node.isFolder && node.id !== self.id" mat-menu-item (click)="moveElement(self, node)">{{node.name}}</button>
+    </ng-container>
+  </ng-template>
+</mat-menu>

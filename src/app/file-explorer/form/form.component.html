@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Create a new folder</h1>
+
+<mat-dialog-content>
+  <mat-form-field class="example-full-width">
+    <input #name matInput [value]="node?.name" placeholder="Folder Name">
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="name.value" color="primary">OK</button>
+</mat-dialog-actions>
